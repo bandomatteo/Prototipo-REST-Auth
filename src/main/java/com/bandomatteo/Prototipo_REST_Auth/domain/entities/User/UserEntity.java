@@ -1,4 +1,4 @@
-package com.bandomatteo.Prototipo_REST_Auth.domain.entities;
+package com.bandomatteo.Prototipo_REST_Auth.domain.entities.User;
 
 
 import jakarta.persistence.*;
