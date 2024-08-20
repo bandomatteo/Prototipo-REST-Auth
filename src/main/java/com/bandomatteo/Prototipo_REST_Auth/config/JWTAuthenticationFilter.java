@@ -42,7 +42,5 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         token = auth.substring(7);
         userEmail = JWTService.extractUsername(token) ; // TODO: extract the email from JTW token
 
-
-
     }
 }
