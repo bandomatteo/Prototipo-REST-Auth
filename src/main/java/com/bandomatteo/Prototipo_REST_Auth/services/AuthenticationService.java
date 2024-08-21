@@ -7,7 +7,9 @@ import com.bandomatteo.Prototipo_REST_Auth.domain.entities.User.Role;
 import com.bandomatteo.Prototipo_REST_Auth.domain.entities.User.UserEntity;
 import com.bandomatteo.Prototipo_REST_Auth.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,12 +58,22 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
+        System.out.println("Attempting to authenticate user with email: " + request.getEmail());
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+            System.out.println("Authentication successful for email: " + request.getEmail());
+        } catch (Exception e) {
+            System.err.println("Authentication failed: " + e.getMessage());
+            e.printStackTrace();  // Stampa lo stack trace completo per il debug
+            throw new RuntimeException("Invalid credentials", e);
+        }
 
         UserEntity user = userRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + request.getEmail()));
 
         var jwt = jwtService.generateToken(user);
 
@@ -70,4 +82,5 @@ public class AuthenticationService {
                 .token(jwt)
                 .build();
     }
+
 }

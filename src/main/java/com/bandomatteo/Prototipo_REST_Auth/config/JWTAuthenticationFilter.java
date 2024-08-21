@@ -22,8 +22,8 @@ import java.io.IOException;
 
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-    private final com.bandomatteo.Prototipo_REST_Auth.services.JWTService JWTService;
-    private final UserDetailsService userDetailsService;
+    private  JWTService JWTService;
+    private  UserDetailsService userDetailsService;
 
     public JWTAuthenticationFilter(JWTService JWTService, UserDetailsService userDetailsService) {
         this.JWTService = JWTService;
@@ -41,7 +41,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         final String token;
         final String userEmail;
 
-        if (auth != null && auth.startsWith("Bearer ")) {
+        if (auth == null || !auth.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
