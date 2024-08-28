@@ -6,10 +6,7 @@ import com.bandomatteo.Prototipo_REST_Auth.domain.dto.RegisterRequestDTO;
 import com.bandomatteo.Prototipo_REST_Auth.services.AuthenticationService;
 import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static java.lang.System.*;
 
@@ -23,7 +20,7 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponseDTO> register(@RequestBody RegisterRequestDTO request) {
         //System.out.println(request);
