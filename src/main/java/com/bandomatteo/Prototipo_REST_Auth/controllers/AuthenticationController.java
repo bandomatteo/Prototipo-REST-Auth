@@ -26,7 +26,8 @@ public class AuthenticationController {
         //System.out.println(request);
         return ResponseEntity.ok(authenticationService.register(request));
     }
-
+    
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody AuthenticationRequestDTO request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
